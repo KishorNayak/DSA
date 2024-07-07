@@ -1,0 +1,43 @@
+struct node{
+    node* link[2];
+    bool present(int bit){
+        return link[bit] !=nullptr;
+    }
+
+    void put(int bit){
+        link[bit] = new node();
+    }
+    node* next(int bit){
+        return link[bit];
+    }
+};
+
+class tries{
+    node* root;
+    public :
+    tries(){
+        root = new node();
+    }
+    void insert(int num){
+            node* current = root;
+        for(int i=31;i>=0;i--){
+            int bit = num>>i & 1 ;
+            if(!current -> present(bit)){
+                current->put(bit);
+        }
+            current = current -> next(bit);
+        }
+    }
+
+    int getmaximun(int num){
+        node* current = root;
+        int ans =0;
+        for(int i=31;i>=0;i--){
+            int temp  =num>>i & 1;
+            if(current->link[!temp] != nullptr)ans += (!temp)*pow(2,i),current =current->next(!temp);
+            else ans += temp*pow(2,i),current = current->next(temp);
+        }
+
+        return ans;
+    }
+};

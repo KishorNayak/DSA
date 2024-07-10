@@ -1,0 +1,21 @@
+class Solution{
+    int solve(int arr[],int n,int start,int end,vector<vector<int> >&dp){
+        if(start==end)return 0;
+        if(dp[start][end]!=-1)return dp[start][end];
+        int sum =pow(2,30);
+        for(int i=start;i<end;i++){
+            int t = arr[start-1] * arr[i] * arr[end] +solve(arr,n,start,i,dp)
+            +solve(arr,n,i+1,end,dp);
+            sum = min(sum,t);
+        }
+        
+        return dp[start][end] = sum;
+    }
+    
+public:
+    int matrixMultiplication(int n, int arr[])
+    {
+        vector<vector<int> >dp(n,vector<int>(n,-1));
+        return solve(arr,n,1,n-1,dp);
+    }
+};

@@ -1,0 +1,47 @@
+class Solution {
+    void toposort( vector<pair<int,int>>list[],stack<int>&q,int node,vector<bool>&visited){
+        visited[node]=true;
+        for(auto it : list[node]){
+            if(!visited[it.first]){
+                toposort(list,q,it.first,visited);
+            }
+        }
+        q.push(node);
+    }
+    
+  public:
+     vector<int> shortestPath(int n,int m, vector<vector<int>>& edges){
+         vector<int>result(n,1000000001);
+        stack<int>q;
+        int src =0;
+        result[src]=0;
+        vector<bool>visited(n,false);
+        
+        vector<pair<int,int>>list[n];
+        for(int i=0;i<m;i++){
+            int u=edges[i][0];
+            int v =edges[i][1];
+            int w=edges[i][2];
+            list[u].push_back({v,w});
+        }
+        toposort(list,q,src,visited);
+        
+        while(!q.empty()){
+            int node = q.top();
+            q.pop();
+            // if(visited[node])continue;
+            // visited[node] = true;
+            
+            for(auto it : list[node]){
+                int end = it.first;
+                int w= it.second;
+                //   if(!visited[end]) q.push(it.first);
+                    int temp =  w+result[node];
+                    result[it.first] = min(temp,result[end]);
+            }
+        }
+        for(int i=0;i<n;i++)if(result[i]==1000000001)result[i]=-1;
+        
+        return result;
+    }
+};

@@ -1,0 +1,49 @@
+class Solution {
+  public:
+    vector<int> shortestPath(int n, int m, vector<vector<int>>& edges) {
+        
+        vector<pair<int,int>>adj[n+1];
+        for(int i=0;i<edges.size();i++){
+            adj[edges[i][0]].push_back({edges[i][1],edges[i][2]});
+            adj[edges[i][1]].push_back({edges[i][0],edges[i][2]});
+        }
+        
+          vector<int>dist(n+1,1e9);
+          vector<int>parent(n+1,-1);
+        set<pair<int,int>>pq;
+        dist[1]=0;
+        pq.insert({1,0});
+        
+        
+        while(!pq.empty()){
+            auto node = *(pq.begin());
+            pq.erase(node);
+            int x = node.first;
+            int w = node.second;
+            
+            for(auto it : adj[x]){
+               int endnode = it.first;
+               int edgeweight = it.second;
+               if(dist[endnode] > w+edgeweight){
+                   dist[endnode]= w+edgeweight;
+                   parent[endnode] = x;
+                   if(dist[endnode]!=1e9)pq.erase({endnode,dist[endnode]});
+                   pq.insert({endnode,dist[endnode]});
+               }
+            }
+        }
+        
+        vector<int>ans;
+        int sum=0;
+        int index = n;
+        if(dist[index]==1e9)return {-1};
+        while(index!=-1){
+            ans.push_back(index);
+            index = parent[index];
+        }
+        
+        ans.push_back(dist[n]);
+        reverse(ans.begin(),ans.end());
+        return ans;
+    }
+};

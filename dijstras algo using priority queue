@@ -1,0 +1,27 @@
+ vector <int> dijkstra(int v, vector<vector<int>> adj[], int s){
+        vector<int>dist(v,1000000001);
+        // vector<bool>visited(v,false);
+        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>pq;
+        dist[s]=0;
+        pq.push({s,0});
+        while(!pq.empty()){
+            auto node = pq.top();
+            pq.pop();
+            int w = node.second;
+            int n = node.first;
+            // visited[n]=true;
+            
+            for(auto it : adj[n]){
+               int edgeweight = it[1];
+               int endnode = it[0];
+               if(dist[endnode] > w+edgeweight){
+                   dist[endnode] = w+edgeweight;
+                   pq.push({endnode,dist[endnode]});
+               }
+            }
+        }
+        
+        return dist;
+    }
+
+//for weigths it will fall into a infinte loop

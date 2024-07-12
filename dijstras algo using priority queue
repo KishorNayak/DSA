@@ -27,3 +27,4 @@ vector <int> dijkstra(int v, vector<vector<int>> adj[], int s){
     }
 
 //for weigths it will fall into a infinte loop
+//if we do this using set then the unnecessary iterations will be avoided but the erase will take log(n) complixity therfore it will not make a noticible differnce

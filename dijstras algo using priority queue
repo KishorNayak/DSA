@@ -1,4 +1,6 @@
- vector <int> dijkstra(int v, vector<vector<int>> adj[], int s){
+//O(Elog(V))
+
+vector <int> dijkstra(int v, vector<vector<int>> adj[], int s){
         vector<int>dist(v,1000000001);
         // vector<bool>visited(v,false);
         priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>pq;

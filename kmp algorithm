@@ -1,0 +1,50 @@
+class Solution {
+public:
+    int strStr(string haystack, string needle) {
+        int m = needle.size();
+        int n = haystack.size();
+
+        // Create the longest prefix suffix (LPS) array for the needle
+        vector<int> lps(m);
+        int len = 0;
+        int i = 1;
+
+        while (i < m) {
+            if (needle[i] == needle[len]) {
+                len++;
+                lps[i] = len;
+                i++;
+            } 
+            else{
+                if(len==0){
+                    i++;
+                }
+                else{
+                    len=0;
+                }
+            }
+            }
+
+        // KMP algorithm to find the needle in the haystack
+        i = 0; // index for haystack
+        int j = 0; // index for needle
+        while (i < n) {
+            if (needle[j] == haystack[i]) {
+                i++;
+                j++;
+            }
+
+            if (j == m) {
+                return i - j; // Found the needle
+            } else if (i < n && needle[j] != haystack[i]) {
+                if (j != 0) {
+                    j = lps[j - 1];
+                } else {
+                    i++;
+                }
+            }
+        }
+
+        return -1; // Needle not found in the haystack
+    }
+};

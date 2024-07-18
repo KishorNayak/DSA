@@ -1,0 +1,32 @@
+class Solution {
+public:
+    int strStr(string haystack, string needle) {
+        if (needle.empty()) return 0; // Handle the edge case where needle is empty
+
+        string s = needle + '2' + haystack;
+        int n = s.size();
+        vector<int> z(n);
+        int l = 0, r = 0;
+
+        for(int i=1;i<n;i++){
+            if(i<r){
+                z[i] = min(r-i,z[i-l]);
+            }
+            while(s[z[i]]==s[z[i]+i] && z[i]+i<n ){
+                z[i]++;
+            }
+            if(z[i]+i > r){
+                l=i;
+                r=z[i]+i;
+            }
+        }
+
+        for (int i = needle.size() + 1; i < n; i++) {
+            if (z[i] == needle.size()) {
+                return i - needle.size() - 1;
+            }
+        }
+
+        return -1;
+    }
+};
